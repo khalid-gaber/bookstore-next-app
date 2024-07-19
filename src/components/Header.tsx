@@ -11,7 +11,8 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 async function checkToken(dispatch: Dispatch, router: AppRouterInstance){
-    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/`, {
+    ///////////////////////////////////////////////////////
+    const res = await fetch(`https://fake-bockstore.vercel.app/api/`, {
         cache: 'no-store',
         method: "POST",
         headers: {
