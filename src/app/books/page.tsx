@@ -14,8 +14,7 @@ export default function () {
   });
   useEffect(()=>{
     async function fetchData(){
-      //////////////////////// ${process.env.NEXT_PUBLIC_URL} //////////////////////
-      const res = await fetch(`https://fake-bockstore.vercel.app/api/books?limit=12&current_page=1`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books?limit=12&current_page=1`, {
         cache: 'no-store'
       });
       if(!res.ok) {

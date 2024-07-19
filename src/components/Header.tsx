@@ -11,8 +11,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 async function checkToken(dispatch: Dispatch, router: AppRouterInstance){
-    //////////////////////////// ${process.env.NEXT_PUBLIC_URL} ///////////////////////////
-    const res = await fetch(`https://fake-bockstore.vercel.app/api/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/`, {
         cache: 'no-store',
         method: "POST",
         headers: {
@@ -53,7 +52,6 @@ export default function Header () {
                 <Link className={`hover:text-purple-400 ${path === '/books' && 'text-purple-400 font-bold'}`} href='/books' >books</Link>
                 <Link className={`hover:text-purple-400 ${path === '/profile' && 'text-purple-400 font-bold'}`} href='/profile' >profile</Link>
             </div>
-            <div>{`${process.env.NEXT_PUBLIC_URL}`}</div>
             {user?._id?<UserItem user={user} />:<AuthItem />}
         </div>
     </header>
