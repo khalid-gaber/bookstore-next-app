@@ -14,7 +14,7 @@ export default function () {
   });
   useEffect(()=>{
     async function fetchData(){
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books?limit=5&current_page=1`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books?limit=12&current_page=1`, {
         cache: 'no-store'
       });
       if(!res.ok) {

@@ -12,7 +12,7 @@ type Paginator = {
 export default async function Paginater({books, setBooks, meta, setMeta}: Paginator) {
         async function handleClick(){
         if(meta.isMore){
-            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books?limit=5&current_page=${meta.current_page+1}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books?limit=12&current_page=${meta.current_page+1}`, {
                 cache: 'no-store'
             });
             if(!res.ok) {

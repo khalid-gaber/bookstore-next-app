@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export default async function ({params}: {params: {id: string}}) {
-      const res = await fetch(`http://localhost:3030/api/books/${params.id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${params.id}`, {
         cache: 'no-store'
       });
       if(!res.ok) {
