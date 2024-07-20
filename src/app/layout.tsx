@@ -19,10 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="h-full overflow-hidden bg-purple-100 flex flex-col ">
+        <div className="h-full overflow-hidden bg-purple-100 flex flex-col items-center">
           <Provided>
             <Header />
-            <main className="flex-1 overflow-auto flex-col items-center">
+            <main className="w-full flex-1 overflow-y-auto overflow-x-hidden">
             {children}
             </main>
           </Provided>

@@ -28,8 +28,8 @@ export default function () {
     fetchData();
   }, [])
   return (
-    <section className="flex flex-col items-center">
-    <div className="w-full m-auto md:w-3/4 h-full flex flex-wrap justify-center text-center">
+    <>
+    <div className="w-full md:w-3/4 mx-auto flex flex-wrap justify-center text-center">
       {books?.map(b => (
         <Book key={b._id} _id={b._id} title={b.title} price={b.price} image={b.image} /> 
       ))}
@@ -37,7 +37,7 @@ export default function () {
       <Suspense fallback={<Loading />}>
         <Paginater meta={meta} setMeta={setMeta} books={books} setBooks={setBooks} />
       </Suspense>
-    </section>
+      </>
   )
 }
 

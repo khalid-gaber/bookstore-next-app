@@ -12,11 +12,11 @@ body {
 }
 
 .form {
-    @apply p-4 w-1/2 rounded-lg flex flex-col gap-y-4 bg-white
+    @apply p-4 mt-5 w-[calc(100%-20px)] md:w-1/2 rounded-lg flex flex-col gap-y-4 bg-white
 }
 
 .form label input{
-    @apply bg-purple-50 
+    @apply bg-purple-50 p-1 outline-none focus:border-b-red-500
 }
 
 .form label {

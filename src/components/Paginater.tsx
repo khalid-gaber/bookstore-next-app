@@ -28,7 +28,7 @@ export default async function Paginater({books, setBooks, meta, setMeta}: Pagina
     ) : (<></>)
     function PaginateBottom(){
         return (
-            <div className='w-1/2 min-w-[500px] mx-auto mb-7'>
+            <div className='w-full mb-7'>
                 <button onClick={handleClick} className="block mx-auto bg-red-500 p-2 rounded-lg text-white text-xs">MORE</button>
             </div>
         )

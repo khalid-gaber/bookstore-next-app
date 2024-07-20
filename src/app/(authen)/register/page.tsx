@@ -68,7 +68,6 @@ export default () => {
     },[])
 
   return (
-    <div className='h-full flex justify-center items-center '>
         <form onSubmit={(e)=>handleSubmit(e, userName, email, pass, dispatch, router)} className='form'>
             <h1 className='text-center mb-6 text-lg font-bold'>register</h1>
             <label>
@@ -86,7 +85,6 @@ export default () => {
             <input type="submit" value="register" className='block py-1 bg-violet-600 hover:bg-violet-700 rounded-md text-white hover:cursor-pointer' />
             <Link className='text-sm text-blue-600 w-fit' href='/login'>have an account? login</Link>
         </form>
-    </div>
   )
 }
 
