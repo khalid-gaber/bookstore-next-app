@@ -28,6 +28,7 @@ export default function () {
     fetchData();
   }, [])
   return (
+    // <section className="flex flex-col items-center">
     <>
     <div className="w-full md:w-3/4 mx-auto flex flex-wrap justify-center text-center">
       {books?.map(b => (
@@ -38,6 +39,7 @@ export default function () {
         <Paginater meta={meta} setMeta={setMeta} books={books} setBooks={setBooks} />
       </Suspense>
       </>
+    // </section>
   )
 }
 
