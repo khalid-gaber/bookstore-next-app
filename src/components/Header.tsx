@@ -1,7 +1,8 @@
 "use client"
 
 import { RootState } from '@/store/store';
-import { reset, update } from '@/store/userSlice';
+import { reset } from '@/store/userSlice';
+import { checkToken } from '@/utilis/checkToken';
 import { Dispatch } from '@reduxjs/toolkit';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import Link from 'next/link';
@@ -9,27 +10,6 @@ import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-async function checkToken(dispatch: Dispatch, router: AppRouterInstance){
-    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/`, {
-        cache: 'no-store',
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            token: `${localStorage.getItem('token')}`
-        },
-    })
-    if(!res.ok) {
-        return;
-    }
-    const json = await res.json();
-    if(json.user){
-        dispatch(update({_id: json.user._id, username: json.user.username}));
-        router.replace('/books');
-    } else {
-        return;
-    }
-}
 
 function logOut(dispatch: Dispatch, router: AppRouterInstance){
     localStorage.removeItem('token');

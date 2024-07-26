@@ -26,3 +26,15 @@ body {
 .auth-nav a {
     @apply p-3 hover:bg-cyan-200
 }
+
+
+
+
+@keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
