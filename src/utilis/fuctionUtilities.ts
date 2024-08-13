@@ -10,8 +10,8 @@ export async function setCookie(cookies: string[]){
     });
 }
 
-export async function getAccessToken (url = `${process.env.NEXT_PUBLIC_URL}/token`) {
-    const res = await fetch(`/api/access-token?url=${url}`, {
+export async function getAccessToken () {
+    const res = await fetch(`/api/access-token`, {
         cache: 'no-store',
         method: 'POST',
         headers: {

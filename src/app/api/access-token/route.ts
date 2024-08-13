@@ -2,15 +2,15 @@ import { cookies, headers } from "next/headers";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const searchParams = req.nextUrl.searchParams;
-    const query = searchParams.get('url')
+    // const searchParams = req.nextUrl.searchParams;
+    // const query = searchParams.get('url')
 
     const cookieStore = cookies()
     const refreshToken = cookieStore.get('refreshToken')
     if(refreshToken) {
         const cookie = `${refreshToken?.name}=${refreshToken?.value}`
     
-        const res = await fetch(`${query}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/token`, {
         cache: 'no-store',
         method: "POST",
         headers: {
