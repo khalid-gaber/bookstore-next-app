@@ -23,7 +23,7 @@ export default function () {
 
     if(state.accessToken) {
         setCookie(state.cookies);
-        // location.reload();///////////////////
+        location.reload();
     }
     
   return (
