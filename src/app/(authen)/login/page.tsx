@@ -23,7 +23,9 @@ export default function () {
 
     if(state.accessToken) {
         setCookie(state.cookies);
-        location.reload();
+        setTimeout(() => {
+            location.reload();///////////////////
+        }, 1000);
     }
     
   return (
