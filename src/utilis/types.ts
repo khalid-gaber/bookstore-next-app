@@ -22,5 +22,11 @@ export type meta = {
 
 export type User = {
   _id: string,
-  username: string
+  username: string,
+  email: string,
+  phone: string,
+  country: string,
+  gender: 'male' | 'female',
+  birthDate: string,
+  avatar: string,
 }

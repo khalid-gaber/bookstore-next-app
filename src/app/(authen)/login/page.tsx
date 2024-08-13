@@ -3,25 +3,27 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { update } from '@/store/userSlice';
 import { useFormState, useFormStatus } from 'react-dom';
 import { login } from '@/utilis/actions';
-import { checkToken } from '@/utilis/checkToken';
+import { getAccessToken, setCookie } from '@/utilis/fuctionUtilities';
 
 export default function () {
     const [state, formAction] = useFormState(login, {message: null});
-    const dispatch = useDispatch();
     const router = useRouter();
 
     useEffect(()=>{
-        checkToken(dispatch, router);
+        async function checkCookieToken() {
+            const accessToken = await getAccessToken();
+            if(accessToken) {
+                router.replace('/books');
+            }
+        }
+        checkCookieToken();
     },[])
 
-    if(state.token) {
-        dispatch(update({_id: state._id, username: state.username}));
-        localStorage.setItem('token', state.token);
-        router.replace('/books');
+    if(state.accessToken) {
+        setCookie(state.cookies);
+        location.reload();
     }
     
   return (
@@ -29,11 +31,11 @@ export default function () {
             <h1 className='text-center mb-6 text-lg font-bold'>log in</h1>
             <label>
                 <span>email</span>
-                <input type="email" required name='email' className='border ' />
+                <input type="email" required name='email' />
             </label>
             <label>
                 <span>password</span>
-                <input type="password" required name='pass' className='border' />
+                <input type="password" required name='pass' />
             </label>
             <SubmitButton />
             <Link className='text-sm text-blue-600 w-fit' href='/register'>don't have an account? register</Link>
@@ -50,4 +52,3 @@ export default function () {
     )
 }
 }
-

@@ -1,29 +1,23 @@
 "use client"
 
+import { resetToken } from '@/store/slices/accessTokenSlice';
 import { RootState } from '@/store/store';
-import { reset } from '@/store/userSlice';
-import { checkToken } from '@/utilis/checkToken';
-import { Dispatch } from '@reduxjs/toolkit';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { resetUser } from '@/store/slices/userSlice';
+import { setAccessTokenAndUser } from '@/utilis/fuctionUtilities';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { User } from '@/utilis/types';
 
-function logOut(dispatch: Dispatch, router: AppRouterInstance){
-    localStorage.removeItem('token');
-    dispatch(reset());
-    router.replace('/login');
-}
-
+//////////////returned component///////////////
 export default function Header () {
     const user = useSelector((state: RootState) => state.user);
     const path = usePathname();
     const dispatch = useDispatch();
-    const router = useRouter();
     useEffect(()=>{
-        checkToken(dispatch, router);
+        setAccessTokenAndUser(dispatch, false);
     }, [])
   return (
     <header className='w-full md:w-3/4 mx-auto pt-3 rounded-b-md shadow-lg mb-5 bg-white'>
@@ -32,13 +26,15 @@ export default function Header () {
                 <Link className={`hover:text-purple-400 ${path === '/books' && 'text-purple-400 font-bold'}`} href='/books' >books</Link>
                 <Link className={`hover:text-purple-400 ${path === '/profile' && 'text-purple-400 font-bold'}`} href='/profile' >profile</Link>
             </div>
-            {user?._id?<UserItem user={user} />:<AuthItem />}
+            {user?._id?<LogoutItem user={user} />:<LoginItem />}
         </div>
     </header>
   )
 }
+//////////////returned component///////////////
 
-function AuthItem(){
+
+function LoginItem(){
     return(
         <div>
             <Link className='inline-block mx-1 p-1 border border-green-400 rounded-md text-green-400 hover:bg-green-400 hover:text-white' href='/login' >login</Link>
@@ -47,13 +43,24 @@ function AuthItem(){
 )
 }
 
-function UserItem({user}: RootState){
+function LogoutItem({user}: {user: User}){
     const dispatch = useDispatch();
     const router = useRouter();
+    
+    async function logOut(){
+        const res = await fetch(`/api/logout`, {
+            cache: 'no-store',
+            method: 'POST'
+        });
+        dispatch(resetUser());
+        dispatch(resetToken());
+        router.replace('/login');
+    }
+    
     return(
         <div>
-            <Link className='mx-2 text-green-400' href='/' >{user?.username}</Link>
-            <button onClick={()=>logOut(dispatch, router)}  className='mx-1 p-1 border border-red-600 rounded-md text-red-600 hover:bg-red-600 hover:text-white'>log out</button>
+            <Link className='mx-2 text-green-400' href='/profile' >{user?.username}</Link>
+            <button onClick={()=>logOut()}  className='mx-1 p-1 border border-red-600 rounded-md text-red-600 hover:bg-red-600 hover:text-white'>log out</button>
         </div>
     )
 }

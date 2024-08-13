@@ -12,19 +12,31 @@ body {
 }
 
 .form {
-    @apply p-4 mt-5 w-[calc(100%-20px)] md:w-1/2 rounded-lg flex flex-col gap-y-4 bg-white
+    @apply p-4 mt-5 w-[calc(100%-20px)] md:w-1/2 rounded-lg flex flex-col gap-y-4 bg-white max-h-full overflow-y-auto
 }
 
 .form label input{
-    @apply bg-purple-50 p-1 outline-none border-transparent focus:border-b-red-500
+    @apply bg-purple-50 p-1 outline-none border border-transparent focus:border-b-red-500
 }
 
-.form label {
+.form>label {
     @apply flex flex-col
 }
 
 .auth-nav a {
     @apply p-3 hover:bg-cyan-200
+}
+
+.profile-form {
+    @apply p-4 mt-5 w-full md:w-3/4 rounded-lg flex flex-col gap-y-4 bg-white max-h-full overflow-y-auto
+}
+
+.profile-form label input{
+    @apply bg-purple-50 p-1 outline-none border border-transparent 
+}
+
+.profile-form>label {
+    @apply flex flex-col
 }
 
 
