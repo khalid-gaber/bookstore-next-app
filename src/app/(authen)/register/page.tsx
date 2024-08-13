@@ -22,8 +22,9 @@ export default function() {
     },[])
 
     if(state.accessToken){
-        setCookie(state.cookies);
-        location.reload();
+        setCookie(state.cookies).then(()=>{
+            location.reload();
+        });
     }
 
   return (
