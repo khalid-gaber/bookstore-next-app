@@ -23,8 +23,10 @@ export default function Header () {
     <header className='w-full md:w-3/4 mx-auto pt-3 rounded-b-md shadow-lg mb-5 bg-white'>
         <div className='flex justify-between p-3'>
             <div className='*:inline-block *:mx-1 *:mt-2'>
-                <Link className={`hover:text-purple-400 ${path === '/books' && 'text-purple-400 font-bold'}`} href='/books' >books</Link>
+                <Link className={`hover:text-purple-400 ${path === '/' && 'text-purple-400 font-bold'}`} href='/' >Posts</Link>
+                {/* <Link className={`hover:text-purple-400 ${path === '/books' && 'text-purple-400 font-bold'}`} href='/books' >books</Link> */}
                 <Link className={`hover:text-purple-400 ${path === '/profile' && 'text-purple-400 font-bold'}`} href='/profile' >profile</Link>
+                <Link className={`hover:text-purple-400 ${path === '/my-posts' && 'text-purple-400 font-bold'}`} href='/my-posts' >my posts</Link>
             </div>
             {user?._id?<LogoutItem user={user} />:<LoginItem />}
         </div>
@@ -60,7 +62,7 @@ function LogoutItem({user}: {user: User}){
     return(
         <div>
             <Link className='mx-2 text-green-400' href='/profile' >{user?.username}</Link>
-            <button onClick={()=>logOut()}  className='mx-1 p-1 border border-red-600 rounded-md text-red-600 hover:bg-red-600 hover:text-white'>log out</button>
+            <button onClick={()=>logOut()}  className='mx-1 p-1 border border-red-400 rounded-md text-red-400 hover:bg-red-400 hover:text-white'>log out</button>
         </div>
     )
 }

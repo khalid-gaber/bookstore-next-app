@@ -1,11 +1,27 @@
 export type post = {
-    id?: number,
-    title: string,
-    body: string,
-    image: string,
-    name: string,
-    profile_image: string
-  }
+  _id: string,
+  user: User,
+  content: string,
+  image: string | null,
+  comments?: comment[],
+  commentsNumber: number,
+  likesNumber: number,
+  dislikesNumber: number,
+  isLiked: boolean,
+  isDisliked: boolean,
+  createdAt: string,
+  updatedAt: string
+}
+
+export type comment = {
+  _id: string,
+  user: User,
+  post: string,
+  content: string,
+  isCommented: boolean,
+  createdAt: string,
+  updatedAt: string
+}
 
 export type book = {
   _id?: number,
@@ -30,3 +46,4 @@ export type User = {
   birthDate: string,
   avatar: string,
 }
+

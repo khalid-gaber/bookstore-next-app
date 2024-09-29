@@ -1,5 +1,5 @@
 import { AppDispatch } from "@/store/store";
-import { updateToken } from "@/store/slices/accessTokenSlice";
+import { resetToken, updateToken } from "@/store/slices/accessTokenSlice";
 import { updateUser } from "@/store/slices/userSlice";
 
 export async function setCookie(cookies: string[]){
@@ -22,6 +22,7 @@ export async function getAccessToken () {
         const json = await res.json();
         return json.accessToken;
     } else {
+        console.log(res);
         return null;
     }
   }
@@ -45,10 +46,27 @@ export async function getAccessToken () {
 
   export async function setAccessTokenAndUser(dispatch: AppDispatch, isUserStored: boolean) {
     const token = await getAccessToken();
-    token && dispatch(updateToken({value: token}));
+    token ? dispatch(updateToken({value: token})) : dispatch(resetToken());
     
     if(!isUserStored && token) {
         const user = await getUser(token);
         dispatch(updateUser({...user}));
     }
+    return token;
 }
+
+export async function HandleAccessTokenAndFetch(callbackFetch: (accessToken: string)=>any, accessToken: string, dispatch: AppDispatch | null = null) {
+    let res: Response = await callbackFetch(accessToken);
+
+    if(res.status === 403 || !accessToken) {
+        if(dispatch) {
+            accessToken = await setAccessTokenAndUser(dispatch, true);
+        } else {
+            accessToken = await getAccessToken();
+        }
+    res = await callbackFetch(accessToken);
+    }
+  
+    return await res;
+  }
+  

@@ -1,11 +1,13 @@
 "use client"
 
 import { RootState } from '@/store/store'
+import { editProfile } from '@/utilis/actions';
 import { getAccessToken } from '@/utilis/fuctionUtilities';
 import Image from 'next/image';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux'
 
 export default function page() {
@@ -21,7 +23,6 @@ export default function page() {
             }
         }
         checkCookieToken();
-    console.log(user);
     // async function checkUser() {
         //     if(!user._id){
         //         router.push('/login');
@@ -83,10 +84,10 @@ export default function page() {
                     <input type="date" readOnly value={user.birthDate.split('T')[0]} name='birthDate' className='w-full' />
                 </label>
             </div>
-            {/* <div className='flex justify-between gap-5 text-center pt-10'>
+            <div className='flex justify-between gap-5 text-center pt-10'>
                 <button className='flex-1 py-3 text-white rounded-lg bg-red-600 hover:bg-red-700'>Delete Account</button>
                 <button onClick={()=>setIsEdit(true)} className='flex-1 py-3 text-white rounded-lg bg-gray-500 hover:bg-gray-600'>Edit Profile</button>
-            </div> */}
+            </div>
             
             {/* <SubmitButton /> */}
             {/* <p className='min-h-[2em] w-full text-red-500'>{state.message as string}</p> */}
@@ -95,12 +96,32 @@ export default function page() {
 }
 
 function EditProfile() {
+    // const [state, formAction] = useFormState(editProfile, null);
+    const [isPending, startTransition] = useTransition();
     const [username, setUsername] = useState(user.username);
     const [email, setEmail] = useState(user.email);
     const [phone, setPhone] = useState(user.phone);
     const [country, setCountry] = useState(user.country);
     const [gender, setGender] = useState(user.gender);
     const [birthDate, setBirthDate] = useState(user.birthDate);
+    
+    async function handleSubmint() {
+        const newAccessToken = await getAccessToken();
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user`, {
+            cache: 'no-store',
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${newAccessToken}`
+            },
+            body: JSON.stringify({username, email, phone, country, gender, birthDate})
+        });
+        if(res.ok) {
+            location.reload();
+        } else {
+            throw new Error('something went wrong');
+        }
+    }
 
     return (
         <form className='profile-form md:w-3/4 [&_input:focus]:border-b-red-500'>
@@ -108,57 +129,65 @@ function EditProfile() {
                 <div className='inline-block my-5'>
                     <Image className='border border-purple-600 rounded-full' src={`/${user.avatar}`} alt='avatar' width={150} height={150} />
                 </div>
+                <label>
+                <span>username</span>
+                <input type="file" name='avatar' />
+                </label>
+
+                <div>
+                    <label htmlFor="myfile">Select a file:</label>
+                </div>
                 <h1 className='text-lg font-bold text-purple-600'>{username}</h1>
             </div>
 
-        <label>
-            <span>username</span>
-            <input autoFocus onChange={(e)=>setUsername(e.target.value)} type="text" required value={username} name='username' />
-        </label>
-        <label>
-            <span>email</span>
-            <input type="email" onChange={(e)=>setEmail(e.target.value)} value={email} required name='email' />
-        </label>
-
-        <div className='flex justify-between gap-x-5'>
-            <label className='flex-1'>
-                <div>phone</div>
-                <input className='w-full' onChange={(e)=>setPhone(e.target.value)} value={phone} type="tel" required name='phone' />
+            <label>
+                <span>username</span>
+                <input autoFocus onChange={(e)=>setUsername(e.target.value)} type="text" required value={username} name='username' />
             </label>
-            <label className='flex-1'>
-                <div>country</div>
-                <input className='w-full' onChange={(e)=>setCountry(e.target.value)} value={country} type='' required name='country' />
+            <label>
+                <span>email</span>
+                <input type="email" onChange={(e)=>setEmail(e.target.value)} value={email} required name='email' />
             </label>
-        </div>
 
-        <div className='flex justify-between items-center gap-x-5'>
-            <div>
-                <div>gender</div>
-                <div className='py-[5px] px-1 flex gap-x-8 bg-purple-50'>
-                    <label> 
-                    <input type="radio" value='male' onChange={(e)=>setGender(e.target.value as 'male')} checked={gender === 'male'} required name='gender' />
-                    {` male`}
-                    </label>
-
-                    <label> 
-                    <input type="radio" value='female' onChange={(e)=>setGender(e.target.value as 'female')} checked={gender === 'female'} required name='gender' />
-                    {` female`}
-                    </label>
-                </div>
+            <div className='flex justify-between gap-x-5'>
+                <label className='flex-1'>
+                    <div>phone</div>
+                    <input className='w-full' onChange={(e)=>setPhone(e.target.value)} value={phone} type="tel" required name='phone' />
+                </label>
+                <label className='flex-1'>
+                    <div>country</div>
+                    <input className='w-full' onChange={(e)=>setCountry(e.target.value)} value={country} type='' required name='country' />
+                </label>
             </div>
-            <label className='flex-1'>
-                <div>birth date</div>
-                <input type="date" onChange={(e)=>setBirthDate(e.target.value)} value={birthDate.split('T')[0]} required name='birthDate' className='w-full' />
-            </label>
-        </div>
 
-        <div className='flex justify-between gap-5 text-center pt-10'>
-                <button className='flex-1 py-3 text-white rounded-lg bg-blue-600 hover:bg-blue-700'>Save Changes</button>
-                <button onClick={()=>setIsEdit(false)} className='flex-1 py-3 text-white rounded-lg bg-gray-500 hover:bg-gray-600'>Don't Save</button>
-        </div>
-        {/* <SubmitButton /> */}
-        {/* <p className='min-h-[2em] w-full text-red-500'>{state.message as string}</p> */}
-    </form>
+            <div className='flex justify-between items-center gap-x-5'>
+                <div>
+                    <div>gender</div>
+                    <div className='py-[5px] px-1 flex gap-x-8 bg-purple-50'>
+                        <label> 
+                        <input type="radio" value='male' onChange={(e)=>setGender(e.target.value as 'male')} checked={gender === 'male'} required name='gender' />
+                        {` male`}
+                        </label>
+
+                        <label> 
+                        <input type="radio" value='female' onChange={(e)=>setGender(e.target.value as 'female')} checked={gender === 'female'} required name='gender' />
+                        {` female`}
+                        </label>
+                    </div>
+                </div>
+                <label className='flex-1'>
+                    <div>birth date</div>
+                    <input type="date" onChange={(e)=>setBirthDate(e.target.value)} value={birthDate.split('T')[0]} required name='birthDate' className='w-full' />
+                </label>
+            </div>
+
+            <div className='flex justify-between gap-5 text-center pt-10'>
+                    <button onClick={()=>startTransition(()=>handleSubmint())} disabled={isPending} className='flex-1 py-3 text-white rounded-lg disabled:bg-gray-300 bg-blue-600 hover:bg-blue-700'>Save Changes</button>
+                    <button onClick={()=>setIsEdit(false)} className='flex-1 py-3 text-white rounded-lg bg-gray-500 hover:bg-gray-600'>Don't Save</button>
+            </div>
+            {/* <SubmitButton /> */}
+            {/* <p className='min-h-[2em] w-full text-red-500'>{state.message as string}</p> */}
+        </form>
     )
 }
 }
