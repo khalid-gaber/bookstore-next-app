@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -15,7 +14,7 @@ export default function () {
         async function checkCookieToken() {
             const accessToken = await getAccessToken();
             if(accessToken) {
-                router.replace('/books');
+                router.replace('/');
             }
         }
         checkCookieToken();
