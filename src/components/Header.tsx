@@ -22,7 +22,7 @@ export default function Header () {
     }, [])
   return (
     <header className='w-full md:w-3/4 mx-auto pt-3 md:rounded-b-md shadow-lg mb-5 bg-white relative'>
-        <div className='flex justify-between p-3'>
+        <div className='flex justify-between items-center p-3'>
             <button
                 className={`block rounded bg-gray-100 p-2 ${showMenu?'text-purple-400':'text-gray-600'} transition hover:text-purple-400 md:hidden`}
                 onClick={()=>setShowMenu(!showMenu)}
@@ -33,7 +33,7 @@ export default function Header () {
 
             <div className=''>
                 <nav aria-label="Global" className={`${!showMenu&&'hidden'} flex md:block absolute md:static top-full left-0 h-dvh md:h-auto w-dvw md:w-auto bg-[rgba(0,0,0,.4)] z-10`}>
-                    <ul className={`flex flex-col p-2 md:p-0 md:flex-row items-start md:items-center h-full w-36 md:w-auto gap-6 text-sm bg-gray-100 md:bg-transparent`}>
+                    <ul className={`flex flex-col p-2 md:p-0 md:flex-row items-start md:items-center h-full w-36 md:w-auto gap-6 text-sm bg-gray-100 md:bg-white`}>
                         <li>
                             <Link className={`text-gray-500 hover:text-purple-400 transition ${path === '/' && 'text-purple-400 font-bold'}`} href='/' >Posts</Link>
                         </li>
